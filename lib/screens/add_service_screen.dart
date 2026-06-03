@@ -98,151 +98,261 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Novo Serviço'),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text(
+        'Novo Serviço',
+        style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: ListView(
-                  children: [
-                    DropdownButtonFormField<int>(
-                      initialValue: _selectedClientId,
-                      decoration: const InputDecoration(
-                        labelText: 'Cliente *',
-                        border: OutlineInputBorder(),
-                      ),
-                      items: _clients.map((client) {
-                        return DropdownMenuItem<int>(
-                          value: client.id,
-                          child: Text(client.name),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedClientId = value;
-                        });
-                      },
-                      validator: (value) => value == null ? 'Selecione um cliente' : null,
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _equipmentController,
-                      decoration: const InputDecoration(
-                        labelText: 'Equipamento *',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) return 'Equipamento é obrigatório';
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _brandController,
-                            decoration: const InputDecoration(
-                              labelText: 'Marca',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: TextFormField(
-                            controller: _modelController,
-                            decoration: const InputDecoration(
-                              labelText: 'Modelo',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                        ),
+    ),
+    body: _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Form(
+            key: _formKey,
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFFFF9800),
+                        Color(0xFFF57C00),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _reportedProblemController,
-                      decoration: const InputDecoration(
-                        labelText: 'Problema relatado',
-                        border: OutlineInputBorder(),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: const Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.home_repair_service,
+                        color: Colors.white,
+                        size: 40,
                       ),
-                      maxLines: 2,
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _serviceDescriptionController,
-                      decoration: const InputDecoration(
-                        labelText: 'Descrição do Serviço *',
-                        border: OutlineInputBorder(),
-                      ),
-                      maxLines: 3,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) return 'Descrição é obrigatória';
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _valueController,
-                            decoration: const InputDecoration(
-                              labelText: 'Valor *',
-                              border: OutlineInputBorder(),
-                              prefixText: 'R\$ ',
-                            ),
-                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) return 'Valor é obrigatório';
-                              return null;
-                            },
-                          ),
+                      SizedBox(height: 12),
+                      Text(
+                        'Cadastrar Serviço',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight:
+                              FontWeight.bold,
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: DropdownButtonFormField<String>(
-                            initialValue: _status,
-                            decoration: const InputDecoration(
-                              labelText: 'Status *',
-                              border: OutlineInputBorder(),
-                            ),
-                            items: ['Em andamento', 'Concluído'].map((status) {
-                              return DropdownMenuItem<String>(
-                                value: status,
-                                child: Text(status),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              if (value != null) {
-                                setState(() {
-                                  _status = value;
-                                });
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 32),
-                    SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: _saveService,
-                        child: const Text('Salvar'),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 6),
+                      Text(
+                        'Registre uma nova ordem de serviço',
+                        style: TextStyle(
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+
+                const SizedBox(height: 24),
+
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        DropdownButtonFormField<int>(
+                          initialValue:
+                              _selectedClientId,
+                          decoration:
+                              const InputDecoration(
+                            labelText:
+                                'Cliente',
+                            prefixIcon:
+                                Icon(Icons.person),
+                          ),
+                          items: _clients.map(
+                            (client) {
+                              return DropdownMenuItem<
+                                  int>(
+                                value: client.id,
+                                child:
+                                    Text(client.name),
+                              );
+                            },
+                          ).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedClientId =
+                                  value;
+                            });
+                          },
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        TextFormField(
+                          controller:
+                              _equipmentController,
+                          decoration:
+                              const InputDecoration(
+                            labelText:
+                                'Equipamento',
+                            prefixIcon:
+                                Icon(Icons.devices),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                controller:
+                                    _brandController,
+                                decoration:
+                                    const InputDecoration(
+                                  labelText:
+                                      'Marca',
+                                  prefixIcon:
+                                      Icon(Icons.sell),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                                width: 12),
+                            Expanded(
+                              child: TextFormField(
+                                controller:
+                                    _modelController,
+                                decoration:
+                                    const InputDecoration(
+                                  labelText:
+                                      'Modelo',
+                                  prefixIcon:
+                                      Icon(Icons.memory),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        TextFormField(
+                          controller:
+                              _reportedProblemController,
+                          maxLines: 3,
+                          decoration:
+                              const InputDecoration(
+                            labelText:
+                                'Problema Relatado',
+                            prefixIcon:
+                                Icon(Icons.warning),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        TextFormField(
+                          controller:
+                              _serviceDescriptionController,
+                          maxLines: 4,
+                          decoration:
+                              const InputDecoration(
+                            labelText:
+                                'Descrição do Serviço',
+                            prefixIcon:
+                                Icon(Icons.description),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        TextFormField(
+                          controller:
+                              _valueController,
+                          keyboardType:
+                              TextInputType.number,
+                          decoration:
+                              const InputDecoration(
+                            labelText:
+                                'Valor',
+                            prefixText:
+                                'R\$ ',
+                            prefixIcon:
+                                Icon(Icons.attach_money),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        DropdownButtonFormField<
+                            String>(
+                          initialValue: _status,
+                          decoration:
+                              const InputDecoration(
+                            labelText:
+                                'Status',
+                            prefixIcon:
+                                Icon(Icons.flag),
+                          ),
+                          items: const [
+                            DropdownMenuItem(
+                              value:
+                                  'Em andamento',
+                              child: Text(
+                                  'Em andamento'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Concluído',
+                              child: Text(
+                                  'Concluído'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() {
+                                _status = value;
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                SizedBox(
+                  height: 56,
+                  child: ElevatedButton.icon(
+                    icon:
+                        const Icon(Icons.save),
+                    label: const Text(
+                      'Salvar Serviço',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: _saveService,
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+              ],
             ),
-    );
-  }
+          ),
+  );
+}
 }

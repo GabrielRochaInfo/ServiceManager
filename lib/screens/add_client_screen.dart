@@ -69,61 +69,152 @@ class _AddClientScreenState extends State<AddClientScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(isEditing ? 'Editar Cliente' : 'Novo Cliente'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nome *',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'O nome é obrigatório';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _phoneController,
-                decoration: const InputDecoration(
-                  labelText: 'Telefone',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.phone,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: _saveClient,
-                  child: const Text('Salvar'),
-                ),
-              ),
-            ],
-          ),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(
+        isEditing ? 'Editar Cliente' : 'Novo Cliente',
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
         ),
       ),
-    );
-  }
+    ),
+    body: Form(
+      key: _formKey,
+      child: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF2563EB),
+                  Color(0xFF1D4ED8),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 40,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  isEditing
+                      ? 'Editar Cliente'
+                      : 'Cadastrar Cliente',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight:
+                        FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  'Gerencie seus clientes com facilidade',
+                  style: TextStyle(
+                    color: Colors.white70,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          Card(
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller:
+                        _nameController,
+                    decoration:
+                        const InputDecoration(
+                      labelText: 'Nome',
+                      prefixIcon:
+                          Icon(Icons.person),
+                    ),
+                    validator: (value) {
+                      if (value == null ||
+                          value.trim().isEmpty) {
+                        return 'Informe o nome';
+                      }
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  TextFormField(
+                    controller:
+                        _phoneController,
+                    keyboardType:
+                        TextInputType.phone,
+                    decoration:
+                        const InputDecoration(
+                      labelText:
+                          'Telefone',
+                      prefixIcon:
+                          Icon(Icons.phone),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  TextFormField(
+                    controller:
+                        _emailController,
+                    keyboardType:
+                        TextInputType.emailAddress,
+                    decoration:
+                        const InputDecoration(
+                      labelText: 'Email',
+                      prefixIcon:
+                          Icon(Icons.email),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          SizedBox(
+            height: 56,
+            child: ElevatedButton.icon(
+              onPressed: _saveClient,
+              icon: const Icon(Icons.save),
+              label: Text(
+                isEditing
+                    ? 'Atualizar Cliente'
+                    : 'Salvar Cliente',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight:
+                      FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
 }
